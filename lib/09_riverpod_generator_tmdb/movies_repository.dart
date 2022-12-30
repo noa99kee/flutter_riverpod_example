@@ -1,9 +1,9 @@
 import 'dart:async';
 
 import 'package:dio/dio.dart';
-import 'package:riverpod_example/09_riverpod_generator/my_dio_provider.dart';
-import 'package:riverpod_example/09_riverpod_generator/tmdb_movie.dart';
-import 'package:riverpod_example/09_riverpod_generator/tmdb_movies_response.dart';
+import 'package:riverpod_example/09_riverpod_generator_tmdb/my_dio_provider.dart';
+import 'package:riverpod_example/09_riverpod_generator_tmdb/tmdb_movie.dart';
+import 'package:riverpod_example/09_riverpod_generator_tmdb/tmdb_movies_response.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 part 'movies_repository.g.dart';
 

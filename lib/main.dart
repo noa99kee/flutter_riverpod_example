@@ -12,9 +12,10 @@ import 'package:riverpod_example/05_stream_provider/stream_provider_widget.dart'
 import 'package:riverpod_example/06_change_notifier_provider/change_notifier_provider_widget.dart';
 import 'package:riverpod_example/07_notifier_provider/notifier_provider_widget.dart';
 import 'package:riverpod_example/08_async_notifier_provider/async_notifier_provider_widget.dart';
-import 'package:riverpod_example/09_riverpod_generator/riverpod_generator_widget.dart';
-import 'package:riverpod_example/10_pagination/pagination_widget.dart';
-import 'package:riverpod_example/11_pub_search/pub_search_widget.dart';
+import 'package:riverpod_example/09_riverpod_generator_tmdb/riverpod_generator_tmdb_widget.dart';
+import 'package:riverpod_example/10_riverpod_generator/riverpod_generator_widget.dart';
+import 'package:riverpod_example/11_pagination/pagination_widget.dart';
+import 'package:riverpod_example/12_pub_search/pub_search_widget.dart';
 
 void main() {
   runApp(
@@ -141,6 +142,16 @@ class HomeScreen extends StatelessWidget {
               );
             },
             child: Text('AsyncNotifierProvider'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => RiverpodGeneratorTMDBWidget()),
+              );
+            },
+            child: Text('RiverpodGenerator TMDB'),
           ),
           ElevatedButton(
             onPressed: () {

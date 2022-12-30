@@ -156,8 +156,14 @@ class FutureProviderWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final asyncPosts = ref.watch(postsProvider);
 
+    final futurePosts = ref.watch(postsProvider.future);
+    print('futurePosts : $futurePosts');
+    final data = ref.watch(postsProvider).value;
+    print('data : $data');
+
     return Scaffold(
       appBar: AppBar(title: const Text('FutureProvider')),
+      //FutureBuilder 와 StreamBuilder 대신 AsyncValue
       body: asyncPosts.when(
         data: (posts) => ListView.separated(
           itemCount: posts!.length,

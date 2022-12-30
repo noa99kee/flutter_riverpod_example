@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:riverpod_example/11_pub_search/detail.dart';
-import 'package:riverpod_example/11_pub_search/pub_repository.dart';
-import 'package:riverpod_example/11_pub_search/ui/appbar.dart';
-import 'package:riverpod_example/11_pub_search/ui/package_item.dart';
-import 'package:riverpod_example/11_pub_search/ui/searchbar.dart';
+import 'package:riverpod_example/12_pub_search/detail.dart';
+import 'package:riverpod_example/12_pub_search/pub_repository.dart';
+import 'package:riverpod_example/12_pub_search/ui/appbar.dart';
+import 'package:riverpod_example/12_pub_search/ui/package_item.dart';
+import 'package:riverpod_example/12_pub_search/ui/searchbar.dart';
 
 part 'pub_search_widget.g.dart';
 
@@ -67,6 +67,7 @@ class PubSearchWidget extends HookConsumerWidget {
                 // disposes the pages previously fetched. Next read will refresh them
                 ref.invalidate(fetchPackagesProvider);
                 // keep showing the progress indicator until the first page is fetched
+                // AsyncValue의 future에 접근 하는 방법
                 return ref.read(
                   fetchPackagesProvider(page: 1, search: searchController.text)
                       .future,
@@ -79,7 +80,8 @@ class PubSearchWidget extends HookConsumerWidget {
                       ? packagesPackageSize
                       : searchPageSize;
 
-                  final page = index ~/ pageSize + 1;
+                  final page = index ~/ pageSize +
+                      1; //     ~/ 몫을 구하는 연산자, % 나머지를 구하는 연산자
                   final indexInPage = index % pageSize;
                   final packageList = ref.watch(
                     fetchPackagesProvider(

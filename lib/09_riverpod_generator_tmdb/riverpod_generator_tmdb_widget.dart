@@ -1,13 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_example/09_riverpod_generator/movies_repository.dart';
-import 'package:riverpod_example/09_riverpod_generator/movies_search_bar.dart';
-import 'package:riverpod_example/09_riverpod_generator/tmdb_movie.dart';
+import 'package:riverpod_example/09_riverpod_generator_tmdb/movies_repository.dart';
+import 'package:riverpod_example/09_riverpod_generator_tmdb/movies_search_bar.dart';
+import 'package:riverpod_example/09_riverpod_generator_tmdb/tmdb_movie.dart';
 import 'package:shimmer/shimmer.dart';
 
-class RiverpodGeneratorWidget extends ConsumerWidget {
-  const RiverpodGeneratorWidget({super.key});
+class RiverpodGeneratorTMDBWidget extends ConsumerWidget {
+  const RiverpodGeneratorTMDBWidget({super.key});
 
   static const pageSize = 20;
 

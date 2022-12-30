@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_example/10_pagination/pagination_model.dart';
-import 'package:riverpod_example/10_pagination/pagination_provider.dart';
-import 'package:riverpod_example/10_pagination/pagination_state.dart';
+import 'package:riverpod_example/11_pagination/pagination_model.dart';
+import 'package:riverpod_example/11_pagination/pagination_provider.dart';
+import 'package:riverpod_example/11_pagination/pagination_state.dart';
 
 class PaginationWidget extends ConsumerWidget {
   const PaginationWidget({super.key});

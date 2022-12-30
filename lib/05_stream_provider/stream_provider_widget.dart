@@ -31,10 +31,16 @@ class StreamProviderWidget extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final dataAsync = ref.watch(dataProvider);
+    final asyncData = ref.watch(dataProvider);
+    print('asyncData : $asyncData');
+    final streamData = ref.watch(dataProvider.stream); //stream을 얻을 수 있다
+    print('streamData : $streamData');
+    final data = ref.watch(dataProvider).value;
+    print('data : $data');
+
     return Scaffold(
       appBar: AppBar(title: const Text('StreamProvider')),
-      body: dataAsync.when(data: ((data) {
+      body: asyncData.when(data: ((data) {
         return Center(
           child: Text(data.body),
         );

@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:riverpod_example/10_pagination/pagination_model.dart';
-import 'package:riverpod_example/10_pagination/pagination_repository.dart';
-import 'package:riverpod_example/10_pagination/pagination_state.dart';
+import 'package:riverpod_example/11_pagination/pagination_model.dart';
+import 'package:riverpod_example/11_pagination/pagination_repository.dart';
+import 'package:riverpod_example/11_pagination/pagination_state.dart';
 
 class PaginationStateNotifier<T extends IModelWithID,
         U extends IBasePaginationRepository<T>>
