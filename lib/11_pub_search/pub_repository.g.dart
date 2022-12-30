@@ -42,7 +42,7 @@ Map<String, dynamic> _$$_PackageMetricsResponseToJson(
 _$_PackageDetails _$$_PackageDetailsFromJson(Map<String, dynamic> json) =>
     _$_PackageDetails(
       version: json['version'] as String,
-      pubspec: json['pubspec'],
+      pubspec: Pubspec.fromJson(json['pubspec'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$$_PackageDetailsToJson(_$_PackageDetails instance) =>

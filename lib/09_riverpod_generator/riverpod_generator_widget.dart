@@ -14,6 +14,7 @@ class RiverpodGeneratorWidget extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final query = ref.watch(moviesSearchTextProvider); //query 가 바뀌면 리 빌드 됨
+
     return Scaffold(
       appBar: AppBar(title: Text('RiverpodGenerator')),
       body: Column(
@@ -22,12 +23,18 @@ class RiverpodGeneratorWidget extends ConsumerWidget {
           Expanded(
             child: RefreshIndicator(
               onRefresh: () {
-                print('onRefresh');
+                //onRefresh 함수는 Future type return 해야한다.
+
                 ref.invalidate(
                     fetchMoviesProvider); //ref.refresh 공급자가 빠르게 연속해서 두 번 다시 빌드되는 것을 방지
-                return ref.read(fetchMoviesProvider(
+
+                // ? 왜 그런지 잘 모르겠당...
+                final refreshableFutureMovies = fetchMoviesProvider(
                         pagination: MoviesPagination(page: 1, query: query))
-                    .future);
+                    .future;
+
+                final futureMovies = ref.read(refreshableFutureMovies);
+                return futureMovies;
               },
               child: ListView.custom(
                 childrenDelegate: SliverChildBuilderDelegate(

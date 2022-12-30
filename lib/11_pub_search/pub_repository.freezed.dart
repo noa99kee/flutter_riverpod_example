@@ -438,14 +438,14 @@ class _$PackageDetailsCopyWithImpl<$Res, $Val extends PackageDetails>
   @override
   $Res call({
     Object? version = null,
-    Object? pubspec = freezed,
+    Object? pubspec = null,
   }) {
     return _then(_value.copyWith(
       version: null == version
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
               as String,
-      pubspec: freezed == pubspec
+      pubspec: null == pubspec
           ? _value.pubspec
           : pubspec // ignore: cast_nullable_to_non_nullable
               as Pubspec,
@@ -476,14 +476,14 @@ class __$$_PackageDetailsCopyWithImpl<$Res>
   @override
   $Res call({
     Object? version = null,
-    Object? pubspec = freezed,
+    Object? pubspec = null,
   }) {
     return _then(_$_PackageDetails(
       version: null == version
           ? _value.version
           : version // ignore: cast_nullable_to_non_nullable
               as String,
-      pubspec: freezed == pubspec
+      pubspec: null == pubspec
           ? _value.pubspec
           : pubspec // ignore: cast_nullable_to_non_nullable
               as Pubspec,
@@ -515,13 +515,12 @@ class _$_PackageDetails implements _PackageDetails {
         (other.runtimeType == runtimeType &&
             other is _$_PackageDetails &&
             (identical(other.version, version) || other.version == version) &&
-            const DeepCollectionEquality().equals(other.pubspec, pubspec));
+            (identical(other.pubspec, pubspec) || other.pubspec == pubspec));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, version, const DeepCollectionEquality().hash(pubspec));
+  int get hashCode => Object.hash(runtimeType, version, pubspec);
 
   @JsonKey(ignore: true)
   @override

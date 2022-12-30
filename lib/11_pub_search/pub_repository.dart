@@ -1,11 +1,10 @@
+import 'package:dio/dio.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:pubspec_parse/pubspec_parse.dart';
-import 'package:dio/dio.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'pub_repository.freezed.dart';
 part 'pub_repository.g.dart';
-
-const userToken = '';
 
 class PubRepository {
   static const _scheme = 'https';
@@ -53,7 +52,121 @@ class PubRepository {
     final packagesResponse = PubSearchResponse.fromJson(response.data!);
     return packagesResponse.packages;
   }
+
+  Future<Package> getPackageDetails({
+    required String packageName,
+    CancelToken? cancelToken,
+  }) async {
+    final dio = Dio();
+    final uri = Uri(
+      scheme: _scheme,
+      host: _host,
+      path: 'api/packages/$packageName',
+    );
+
+    final response = await dio.getUri<Map<String, Object?>>(
+      uri,
+      cancelToken: cancelToken,
+    );
+
+    final packageResponse = Package.fromJson(response.data!);
+    return packageResponse;
+  }
+
+  Future<PackageMetricsScore> getPackageMetrics({
+    required String packageName,
+    CancelToken? cancelToken,
+  }) async {
+    final uri = Uri(
+      scheme: _scheme,
+      host: _host,
+      path: 'api/packages/$packageName/metrics',
+    );
+
+    final responseFuture = dio.getUri<Map<String, Object?>>(
+      uri,
+      cancelToken: cancelToken,
+    );
+
+    final likesUri = Uri(
+      scheme: _scheme,
+      host: _host,
+      path: 'api/packages/$packageName/likes',
+    );
+
+    /// Although the metrics request does include the likes count, it seems that
+    /// the server caches the response for a long period of time.
+    /// For the same of "http polling" showcase, we're separately fetching the likes
+    /// count
+    final likesResponsFuture = dio.getUri<Map<String, Object?>>(
+      likesUri,
+      cancelToken: cancelToken,
+    );
+
+    final metricsResponse =
+        PackageMetricsResponse.fromJson((await responseFuture).data!);
+    return metricsResponse.score.copyWith(
+      likeCount: (await likesResponsFuture).data!['likes']! as int,
+    );
+  }
+
+  Future<void> like({
+    required String packageName,
+    CancelToken? cancelToken,
+  }) async {
+    final uri = Uri(
+      scheme: _scheme,
+      host: _host,
+      path: 'api/account/likes/$packageName',
+    );
+
+    await dio.putUri<void>(
+      uri,
+      cancelToken: cancelToken,
+      options: Options(
+        headers: <String, String>{'authorization': userToken},
+      ),
+    );
+  }
+
+  Future<void> unlike({
+    required String packageName,
+    CancelToken? cancelToken,
+  }) async {
+    final uri = Uri(
+      scheme: _scheme,
+      host: _host,
+      path: 'api/account/likes/$packageName',
+    );
+
+    await dio.deleteUri<void>(
+      uri,
+      cancelToken: cancelToken,
+      options: Options(headers: <String, String>{'authorization': userToken}),
+    );
+  }
+
+  Future<List<String>> getLikedPackages({CancelToken? cancelToken}) async {
+    final uri = Uri(
+      scheme: _scheme,
+      host: _host,
+      path: 'api/account/likes',
+    );
+
+    final response = await dio.getUri<Map<String, Object?>>(
+      uri,
+      cancelToken: cancelToken,
+      options: Options(
+        headers: <String, String>{'authorization': userToken},
+      ),
+    );
+
+    final packageResponse = LikedPackagesResponse.fromJson(response.data!);
+    return packageResponse.likedPackages.map((e) => e.package).toList();
+  }
 }
+
+const userToken = '';
 
 @freezed
 class PackageMetricsScore with _$PackageMetricsScore {
