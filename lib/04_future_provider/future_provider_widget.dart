@@ -1,4 +1,5 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
@@ -89,10 +90,11 @@ class PostRepository {
   });
   final Dio dio;
 
-  Future<List<Post>?> fetchPosts() async {
+  Future<List<Post>?> fetchPosts({CancelToken? cancelToken}) async {
     try {
-      final response =
-          await dio.get('https://jsonplaceholder.typicode.com/posts');
+      final response = await dio.get(
+          'https://jsonplaceholder.typicode.com/posts',
+          cancelToken: cancelToken);
       final data = response.data;
       final posts = data as List<dynamic>;
       return posts.map((post) => Post.fromMap(post)).toList();
@@ -103,10 +105,12 @@ class PostRepository {
     }
   }
 
-  Future<Post> fetchPost({required int postId}) async {
+  Future<Post> fetchPost(
+      {required int postId, CancelToken? cancelToken}) async {
     try {
-      final response =
-          await dio.get('https://jsonplaceholder.typicode.com/posts/$postId');
+      final response = await dio.get(
+          'https://jsonplaceholder.typicode.com/posts/$postId',
+          cancelToken: cancelToken);
       switch (response.statusCode) {
         case 200:
           final data = response.data;
@@ -133,17 +137,40 @@ final postRepositoryProvider = Provider<PostRepository>(
 
 final postsProvider = FutureProvider.autoDispose<List<Post>?>(
   (ref) {
+    final cancelToken = CancelToken();
+    ref.onDispose(() {
+      cancelToken.cancel();
+    });
     final repository = ref.watch(postRepositoryProvider);
 
-    return repository.fetchPosts();
+    return repository.fetchPosts(cancelToken: cancelToken);
   },
 );
-
+//autoDispose에서 시간 기반 캐시 유지
 final postProvider = FutureProvider.autoDispose.family<Post, int>(
   (ref, postId) {
+    print('postProvider init');
+    final link = ref.keepAlive();
+    final cancelToken = CancelToken();
+    Timer? timer;
+    ref.onDispose(() {
+      print('postProvider onDispose');
+      timer?.cancel();
+      cancelToken.cancel();
+    });
+    ref.onCancel(() {
+      print('postProvider onCancel');
+      timer = Timer(const Duration(seconds: 5), () {
+        link.close(); //onDispose 호출
+      });
+    });
+    ref.onResume(() {
+      print('postProvider onResume');
+      timer?.cancel();
+    });
     final repository = ref.watch(postRepositoryProvider);
 
-    return repository.fetchPost(postId: postId);
+    return repository.fetchPost(postId: postId, cancelToken: cancelToken);
   },
 );
 
@@ -159,7 +186,7 @@ class FutureProviderWidget extends ConsumerWidget {
     final futurePosts = ref.watch(postsProvider.future);
     print('futurePosts : $futurePosts');
     final data = ref.watch(postsProvider).value;
-    print('data : $data');
+    //print('data : $data');
 
     return Scaffold(
       appBar: AppBar(title: const Text('FutureProvider')),

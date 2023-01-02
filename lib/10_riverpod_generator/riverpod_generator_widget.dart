@@ -5,6 +5,12 @@ import 'package:riverpod_example/09_riverpod_generator_tmdb/tmdb_movie.dart';
 
 part 'riverpod_generator_widget.g.dart';
 
+//riverpod generator 다음만 지원 한다.
+// 01. Provider
+// 04. FutureProvider
+// 07. NotifierProvider
+// 08. AsyncNotifierProvider
+
 @riverpod
 String helloWorld(HelloWorldRef ref) {
   return 'Hello world';
@@ -19,11 +25,15 @@ class Movie {
   });
 }
 
-@riverpod
+// 기본 keepAlive = false, AutoDispose (지워짐)   VS  keepAlive = true, AutoDispose NOT (안 지워짐, onDispose 호출 안됨)
+@Riverpod(keepAlive: false)
 Future<List<Movie>> movies(
   MoviesRef ref, {
   required int page,
 }) async {
+  ref.onDispose(() {
+    print('movies onDispose');
+  });
   await Future.delayed(const Duration(seconds: 1));
   return <Movie>[Movie(id: 0, title: 'titanic'), Movie(id: 1, title: 'avatar')];
 }

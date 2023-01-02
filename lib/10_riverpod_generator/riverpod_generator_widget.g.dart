@@ -225,7 +225,7 @@ final helloWorldProvider = AutoDisposeProvider<String>(
       const bool.fromEnvironment('dart.vm.product') ? null : _$helloWorldHash,
 );
 typedef HelloWorldRef = AutoDisposeProviderRef<String>;
-String _$moviesHash() => r'59426cb14898a9ae440f0da9be3cbed0b3ca12d6';
+String _$moviesHash() => r'424f39443015f3916214eab12823a95444a5ebd7';
 
 /// See also [movies].
 class MoviesProvider extends AutoDisposeFutureProvider<List<Movie>> {
