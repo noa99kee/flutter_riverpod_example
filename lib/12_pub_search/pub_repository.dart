@@ -83,6 +83,8 @@ class PubRepository {
       path: 'api/packages/$packageName/metrics',
     );
 
+    print('PubRepository getPackageMetrics');
+
     final responseFuture = dio.getUri<Map<String, Object?>>(
       uri,
       cancelToken: cancelToken,

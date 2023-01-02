@@ -25,8 +25,9 @@ class RiverpodGeneratorTMDBWidget extends ConsumerWidget {
               onRefresh: () {
                 //onRefresh 함수는 Future type return 해야한다.
 
-                ref.invalidate(
-                    fetchMoviesProvider); //ref.refresh 공급자가 빠르게 연속해서 두 번 다시 빌드되는 것을 방지
+                //container.invalidate(provider)/ ref.invalidate(provider)및 ref.invalidateSelf().
+                //이는 ref.refresh메서드와 유사하지만 공급자를 즉시 ​​다시 빌드하지 않습니다.
+                ref.invalidate(fetchMoviesProvider);
 
                 // ? 왜 그런지 잘 모르겠당...
                 final refreshableFutureMovies = fetchMoviesProvider(

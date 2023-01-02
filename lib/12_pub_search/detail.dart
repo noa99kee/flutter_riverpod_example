@@ -18,6 +18,7 @@ part 'detail.g.dart';
 // TODO hot-reload handle family adding parameters
 // TODO found "Future already completed error" after adding family parameter
 
+//확장 메서드 선언
 extension CancelTokenX on Ref {
   CancelToken cancelToken() {
     final cancelToken = CancelToken();
@@ -31,7 +32,19 @@ Future<Package> fetchPackageDetails(
   FetchPackageDetailsRef ref, {
   required String packageName,
 }) async {
+  print('fetchPackageDetails init');
   final cancelToken = ref.cancelToken();
+
+  ref.onDispose(() {
+    print('fetchPackageDetails onDispose');
+  });
+  ref.onCancel(() {
+    print('fetchPackageDetails onCancel');
+  });
+
+  ref.onResume(() {
+    print('fetchPackageDetails onResume');
+  });
 
   return ref
       .watch(pubRepositoryProvider)
@@ -80,14 +93,15 @@ class PackageMetrics extends _$PackageMetrics {
     // state = AsyncData(
     //   state.value!.copyWith(likeCount: state.value!.likeCount + 1),
     // );
-    ref.invalidateSelf();
+    ref.invalidateSelf(); // ref.refresh랑 비슷한데 provider를 즉시 rebuild하지 않음.
 
     // Since we liked a package, the list of liked packages should also be updated.
     // An alternative could be:
     // - convert likedPackages to a class
     // - add a like/unlike methods that updates the list of liked packages
     // - call ref.read(likedPackagesProvider).like(packageName);
-    ref.invalidate(likedPackagesProvider);
+    ref.invalidate(
+        likedPackagesProvider); // ref.refresh랑 비슷한데 provider를 즉시 rebuild하지 않음.
   }
 
   Future<void> unlike() async {

@@ -130,7 +130,7 @@ abstract class _$PackageMetrics
 }
 
 String _$fetchPackageDetailsHash() =>
-    r'e65ba332cb8397cc5a1aca6e656233dff698391a';
+    r'30e62529e7046db38fb71c2d103aca310277aa09';
 
 /// See also [fetchPackageDetails].
 class FetchPackageDetailsProvider extends AutoDisposeFutureProvider<Package> {
