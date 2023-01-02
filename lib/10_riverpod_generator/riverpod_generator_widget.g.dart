@@ -215,6 +215,22 @@ abstract class _$GAMovie extends BuildlessAutoDisposeAsyncNotifier<Movie> {
   });
 }
 
+String _$LikeMovieHash() => r'fc026109d5a49c3f6927d09406d007dca458f485';
+
+/// See also [LikeMovie].
+final likeMovieProvider = AutoDisposeNotifierProvider<LikeMovie, int>(
+  LikeMovie.new,
+  name: r'likeMovieProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$LikeMovieHash,
+);
+typedef LikeMovieRef = AutoDisposeNotifierProviderRef<int>;
+
+abstract class _$LikeMovie extends AutoDisposeNotifier<int> {
+  @override
+  int build();
+}
+
 String _$helloWorldHash() => r'8bbe6cff2b7b1f4e1f7be3d1820da793259f7bfc';
 
 /// See also [helloWorld].

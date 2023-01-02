@@ -76,6 +76,23 @@ class GAMovie extends _$GAMovie {
   }
 }
 
+@riverpod
+class LikeMovie extends _$LikeMovie {
+  @override
+  int build() {
+    return 0;
+  }
+
+  Future<void> like() async {
+    state++;
+  }
+
+  Future<void> reset() async {
+    ref.invalidateSelf(); //자기 자신 초기화
+    ref.invalidate(gCounterProvider); //다른 프로바이더 초기화
+  }
+}
+
 class RiverpodGeneratorWidget extends ConsumerWidget {
   const RiverpodGeneratorWidget({super.key});
 
@@ -86,6 +103,8 @@ class RiverpodGeneratorWidget extends ConsumerWidget {
     final gCounter = ref.watch(gCounterProvider);
     final gMovie = ref.watch(gMovieProvider(movieId: 100));
     final gaMovie = ref.watch(gAMovieProvider(movieId: 1000));
+    final likeMovie = ref.watch(likeMovieProvider);
+
     return Scaffold(
       appBar: AppBar(title: Text('Riverpod Generator')),
       body: Column(
@@ -125,6 +144,20 @@ class RiverpodGeneratorWidget extends ConsumerWidget {
           }, orElse: (() {
             return CircularProgressIndicator();
           })),
+          Row(
+            children: [
+              ElevatedButton(
+                  onPressed: () {
+                    ref.read(likeMovieProvider.notifier).like();
+                  },
+                  child: Text('like movie :' + likeMovie.toString())),
+              ElevatedButton(
+                  onPressed: () {
+                    ref.read(likeMovieProvider.notifier).reset();
+                  },
+                  child: Text('reset')),
+            ],
+          )
         ],
       ),
     );

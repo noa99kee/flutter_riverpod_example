@@ -93,15 +93,14 @@ class PackageMetrics extends _$PackageMetrics {
     // state = AsyncData(
     //   state.value!.copyWith(likeCount: state.value!.likeCount + 1),
     // );
-    ref.invalidateSelf(); // ref.refresh랑 비슷한데 provider를 즉시 rebuild하지 않음.
+    ref.invalidateSelf(); //
 
     // Since we liked a package, the list of liked packages should also be updated.
     // An alternative could be:
     // - convert likedPackages to a class
     // - add a like/unlike methods that updates the list of liked packages
     // - call ref.read(likedPackagesProvider).like(packageName);
-    ref.invalidate(
-        likedPackagesProvider); // ref.refresh랑 비슷한데 provider를 즉시 rebuild하지 않음.
+    ref.invalidate(likedPackagesProvider); //
   }
 
   Future<void> unlike() async {
