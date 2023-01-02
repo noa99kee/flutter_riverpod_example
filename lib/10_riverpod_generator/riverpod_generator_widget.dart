@@ -28,6 +28,42 @@ Future<List<Movie>> movies(
   return <Movie>[Movie(id: 0, title: 'titanic'), Movie(id: 1, title: 'avatar')];
 }
 
+//AutoDispose Notifier Provider
+@riverpod
+class GCounter extends _$GCounter {
+  @override
+  int build() {
+    return 0;
+  }
+
+  void increment() {
+    state++;
+  }
+}
+
+//AutoDispose AsyncNotifier Provider
+@riverpod
+class GMovie extends _$GMovie {
+  @override
+  FutureOr<Movie> build({
+    required int movieId,
+  }) {
+    return Movie(id: movieId, title: 'titanic');
+  }
+}
+
+//AutoDispose AsyncNotifier Provider  비동기 초기 값
+@riverpod
+class GAMovie extends _$GAMovie {
+  @override
+  FutureOr<Movie> build({
+    required int movieId,
+  }) async {
+    await Future.delayed(const Duration(seconds: 1));
+    return Movie(id: movieId, title: 'avatar II');
+  }
+}
+
 class RiverpodGeneratorWidget extends ConsumerWidget {
   const RiverpodGeneratorWidget({super.key});
 
@@ -35,6 +71,9 @@ class RiverpodGeneratorWidget extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final helloWorld = ref.watch(helloWorldProvider);
     final movies = ref.watch(moviesProvider(page: 0));
+    final gCounter = ref.watch(gCounterProvider);
+    final gMovie = ref.watch(gMovieProvider(movieId: 100));
+    final gaMovie = ref.watch(gAMovieProvider(movieId: 1000));
     return Scaffold(
       appBar: AppBar(title: Text('Riverpod Generator')),
       body: Column(
@@ -58,7 +97,22 @@ class RiverpodGeneratorWidget extends ConsumerWidget {
             return Text('error');
           }), loading: (() {
             return CircularProgressIndicator();
-          }))
+          })),
+          ElevatedButton(
+              onPressed: () {
+                ref.read(gCounterProvider.notifier).increment();
+              },
+              child: Text(gCounter.toString())),
+          gMovie.maybeWhen(data: (movie) {
+            return Text(movie.title);
+          }, orElse: (() {
+            return Container();
+          })),
+          gaMovie.maybeWhen(data: (movie) {
+            return Text(movie.title);
+          }, orElse: (() {
+            return CircularProgressIndicator();
+          })),
         ],
       ),
     );
