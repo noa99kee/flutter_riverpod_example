@@ -55,9 +55,13 @@ Future<Package> fetchPackageDetails(
 Future<List<String>> likedPackages(LikedPackagesRef ref) async {
   final cancelToken = ref.cancelToken();
 
-  return ref
+  final likePackages = await ref
       .watch(pubRepositoryProvider)
       .getLikedPackages(cancelToken: cancelToken);
+
+  print('likePackages=$likePackages');
+
+  return likePackages;
 }
 
 @riverpod

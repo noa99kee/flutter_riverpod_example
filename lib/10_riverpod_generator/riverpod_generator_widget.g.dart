@@ -3,6 +3,22 @@
 part of 'riverpod_generator_widget.dart';
 
 // **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+_$_Todo _$$_TodoFromJson(Map<String, dynamic> json) => _$_Todo(
+      id: json['id'] as String,
+      description: json['description'] as String,
+      completed: json['completed'] as bool,
+    );
+
+Map<String, dynamic> _$$_TodoToJson(_$_Todo instance) => <String, dynamic>{
+      'id': instance.id,
+      'description': instance.description,
+      'completed': instance.completed,
+    };
+
+// **************************************************************************
 // RiverpodGenerator
 // **************************************************************************
 
@@ -229,6 +245,39 @@ typedef LikeMovieRef = AutoDisposeNotifierProviderRef<int>;
 abstract class _$LikeMovie extends AutoDisposeNotifier<int> {
   @override
   int build();
+}
+
+String _$TodosHash() => r'adb388ec4ec3adaf1f7b7014996c10fea35caf24';
+
+/// See also [Todos].
+final todosProvider = AutoDisposeNotifierProvider<Todos, List<Todo>>(
+  Todos.new,
+  name: r'todosProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$TodosHash,
+);
+typedef TodosRef = AutoDisposeNotifierProviderRef<List<Todo>>;
+
+abstract class _$Todos extends AutoDisposeNotifier<List<Todo>> {
+  @override
+  List<Todo> build();
+}
+
+String _$AsyncTodosHash() => r'b0660f114ba36d0416a3d2a7c1bb2dcd6632a090';
+
+/// See also [AsyncTodos].
+final asyncTodosProvider =
+    AutoDisposeAsyncNotifierProvider<AsyncTodos, List<Todo>>(
+  AsyncTodos.new,
+  name: r'asyncTodosProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$AsyncTodosHash,
+);
+typedef AsyncTodosRef = AutoDisposeAsyncNotifierProviderRef<List<Todo>>;
+
+abstract class _$AsyncTodos extends AutoDisposeAsyncNotifier<List<Todo>> {
+  @override
+  FutureOr<List<Todo>> build();
 }
 
 String _$helloWorldHash() => r'8bbe6cff2b7b1f4e1f7be3d1820da793259f7bfc';

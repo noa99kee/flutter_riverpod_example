@@ -29,6 +29,7 @@ class AuthNotifier extends StateNotifier<AsyncValue<User>> {
   }
 }
 
+//비동기적인 초기화를 할 수 없어?
 final authProvider =
     AutoDisposeStateNotifierProvider<AuthNotifier, AsyncValue<User>>(
   (ref) {

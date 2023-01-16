@@ -201,7 +201,7 @@ class FetchPackageDetailsFamily extends Family<AsyncValue<Package>> {
   String? get name => r'fetchPackageDetailsProvider';
 }
 
-String _$likedPackagesHash() => r'304a4def167e245812638cba776e8d5eb66d8844';
+String _$likedPackagesHash() => r'85a5d34b7602b28a2eb904f232b1353e9dbffd91';
 
 /// See also [likedPackages].
 final likedPackagesProvider = AutoDisposeFutureProvider<List<String>>(
