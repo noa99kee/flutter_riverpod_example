@@ -166,7 +166,8 @@ class Todos extends _$Todos {
 class AsyncTodos extends _$AsyncTodos {
   Future<List<Todo>> _fetchTodo() async {
     final json = await http.get(Uri.http('api/todos'));
-    final todos = jsonDecode(json.body) as List<Map<String, dynamic>>;
+    final todos = jsonDecode(json.body)
+        as List<Map<String, dynamic>>; //http Response.body  dio Response.data
     return todos.map((todo) => Todo.fromJson(todo)).toList();
   }
 
